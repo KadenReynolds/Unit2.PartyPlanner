@@ -1,4 +1,4 @@
-console.log("connected")
+
 const COHORT = '2309-FTB-ET-WEB-FT'
 const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${COHORT}/events`
 
@@ -36,6 +36,11 @@ async function renderEvents() {
   })
 }
 
+async function render(){
+  await getEvents()
+  renderEvents()
+}
+
 async function addEvent(event){
     event.preventDefault()
     let name = eventForm.name.value
@@ -43,26 +48,22 @@ async function addEvent(event){
     let location = eventForm.location.value
     let description = eventForm.description.value
     console.log(name)
+    console.log(date)
+    console.log(location)
+    console.log(description)
     const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {'Content-type': 'application/json'},
+      method: 'POST',
+      headers: {'Content-type': 'application/json' },
       body: JSON.stringify({
         name,
         date,
         location,
         description,
       }),
-  })
-  render()
+    })
+    render()
 }
 
 eventForm.addEventListener("submit", addEvent)
-
-
-
-async function render(){
-  await getEvents()
-  renderEvents()
-}
 
 render()
