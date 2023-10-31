@@ -4,6 +4,8 @@ const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${COHORT}/event
 
 
 const partyDiv = document.getElementById("partyDiv")
+const addPartyBtn = document.querySelector("button")
+const eventForm = document.getElementById("eventForm")
 let parties = []
 
 async function getEvents(){
@@ -33,6 +35,30 @@ async function renderEvents() {
     partyDiv.appendChild(eventDivs)
   })
 }
+
+async function addEvent(event){
+    event.preventDefault()
+    let name = eventForm.name.value
+    let date = eventForm.datetime.value
+    let location = eventForm.location.value
+    let description = eventForm.description.value
+    console.log(name)
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {'Content-type': 'application/json'},
+      body: JSON.stringify({
+        name,
+        date,
+        location,
+        description,
+      }),
+  })
+  render()
+}
+
+eventForm.addEventListener("submit", addEvent)
+
+
 
 async function render(){
   await getEvents()

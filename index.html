@@ -9,18 +9,27 @@
 <body>
   <h1>Create a new Party...</h1>
   <div id="addPartyDiv">
-    <form action="">
-      <label for="name">Name</label>
-      <input type="text" name="name">
+    <form action="" id="eventForm">
+      <label for="name">
+        Name
+        <input type="text" name="name"/>
+      </label>
 
-      <label for="datetime">Date/Time</label>
-      <input type="date" name="datetime">
+      <label for="datetime">
+        Date/Time
+        <input type="date" name="datetime"/>
+      </label>
       
-      <label for="description">Description</label>
-      <input type="text" name="description">
+      <label for="location">
+        Location
+        <input type="text" name="location"/>
+      </label>
 
-      <label for="location">Location</label>
-      <input type="text" name="location">
+      <label for="description">
+        Description
+        <input type="text" name="description"/>
+      </label>
+      <button type="submit">+</button>
     </form>
   </div>
   <div id="partyDiv"></div>
