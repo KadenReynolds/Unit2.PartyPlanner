@@ -1,39 +1,60 @@
 
-const COHORT = '2309-FTB-ET-WEB-FT'
-const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${COHORT}/events`
+const COHORT = "2309-FTB-ET-WEB-FT";
+const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/`+ COHORT;
 
 
 const partyDiv = document.getElementById("partyDiv")
 const addPartyBtn = document.querySelector("button")
-const eventForm = document.getElementById("eventForm")
-let parties = []
+const eventForm = document.querySelector("#eventForm")
+
+let parties = {
+  events: []
+}
 
 async function getEvents(){
   try{
-    let response = await fetch(API_URL)
+    let response = await fetch(API_URL + '/events')
     let data = await response.json()
     
-    parties = data.data
-    console.log(parties)
+    parties.events = data.data
   }
   catch(err){
     console.error(err)
   }
 }
 
-async function renderEvents() {
-  let eventCards = parties.map((events) => {
+function renderEvents() {
+  if(!parties.events.length){
+    parties.innerHTML = `<h2>No Parties</h2>`
+    return
+  }
+  let eventCards = parties.events.map((events) => {
     const eventDivs = document.createElement("div")
+    const deleteBtn = document.createElement("button")
+    deleteBtn.innerText = "X"
+    deleteBtn.style.marginTop = "10px"
+    deleteBtn.addEventListener("click", async() => {
+      try{
+        const response = await fetch(API_URL + `/events/${events.id}`, {
+          method: "DELETE"
+        });
+        getEvents()
+      } catch(error){
+        console.error(error)
+      }
+    })
     eventDivs.innerHTML = `<h2>${events.name}</h2>
-                           <h3>${events.date}</h3>
-                           <h4>${events.location}</h4>
-                           <p>${events.description}</p>`
+                           <h3>${events.description}</h3>
+                           <h4>${events.date}</h4>
+                           <address>${events.location}</address>`
     eventDivs.style.margin = "10px"
     eventDivs.style.padding = "10px"
     eventDivs.style.borderRadius = "5px"
     eventDivs.style.backgroundColor = "lightgrey"
-    partyDiv.appendChild(eventDivs)
+    eventDivs.appendChild(deleteBtn)
+    return eventDivs
   })
+  partyDiv.replaceChildren(...eventCards)
 }
 
 async function render(){
@@ -47,21 +68,24 @@ async function addEvent(event){
     let date = eventForm.datetime.value
     let location = eventForm.location.value
     let description = eventForm.description.value
-    console.log(name)
-    console.log(date)
-    console.log(location)
-    console.log(description)
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {'Content-type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        date,
-        location,
-        description,
-      }),
-    })
-    render()
+    console.log(typeof(date))
+    try{
+      const response = await fetch(API_URL + "/events", {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          description: description,
+          date: `${date}:00.000Z`,
+          location: location,
+        }),
+      })
+      console.log(response)
+      render()
+    } catch(error){
+      console.error(error)
+    }
+  render()
 }
 
 eventForm.addEventListener("submit", addEvent)

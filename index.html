@@ -3,37 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Party Planner v.1</title>
   <script src="index.js" defer></script>
 </head>
 <body>
   <h1>Create a new Party...</h1>
   <div id="addPartyDiv">
     <form action="" id="eventForm">
-      <label for="name">
-        Name
-        <input type="text" name="name"/>
-      </label>
-
-      <label for="datetime">
-        Date/Time
-        <input type="date" name="datetime"/>
-      </label>
+      <label for="name">Name</label>
+      <input type="text" name="name"/>
       
-      <label for="location">
-        Location
-        <input type="text" name="location"/>
-      </label>
-
-      <label for="description">
-        Description
-        <input type="text" name="description"/>
-      </label>
+      <label for="description">Description</label>
+      <input type="text" name="description"/>
+      
+      <label for="datetime">Date/Time</label>
+      <input type="datetime-local" name="datetime"/>
+      <br>
+      <label for="location">Location</label>
+      <input type="text" name="location"/>
       <button type="submit">+</button>
     </form>
   </div>
+  <h1>Parties</h1>
   <div id="partyDiv">
-    <h1>Parties</h1>
   </div>
 </body>
 </html>
